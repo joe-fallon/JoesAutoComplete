@@ -5,7 +5,7 @@ import time
 
 MIN_WORD_SIZE = 3
 MAX_WORD_SIZE = 50
-MAX_VIEWS = 100
+MAX_VIEWS = 1000
 
 class JoesAutocomplete(sublime_plugin.EventListener):
     def on_query_completions(self, view, prefix, locations):
@@ -39,12 +39,13 @@ class JoesAutocomplete(sublime_plugin.EventListener):
 
         current_view_words = filter_words(current_view_words, prefix)
         words = filter_words(words, prefix)   
-        words = sorted(words)
+        # words = sorted(words)
 
         # Prioritize the current view's words to the top.
         words = current_view_words + words
         words = without_duplicates(words)
-        
+        words = sorted(words)
+
         # Convert list to tuples.
         words = [(w, w.replace('$', '\\$')) for w in words]
 
@@ -73,6 +74,8 @@ def all_words(view):
 
 def filter_words(words, prefix=None):
     words = [w for w in words if MIN_WORD_SIZE <= len(w) <= MAX_WORD_SIZE]
+    # print words
+
     results = []
     for w in words:
         if prefix == None or prefix != w:
