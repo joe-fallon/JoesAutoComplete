@@ -39,12 +39,12 @@ class JoesAutocomplete(sublime_plugin.EventListener):
 
         current_view_words = filter_words(current_view_words, prefix)
         words = filter_words(words, prefix)   
-        # words = sorted(words)
+        # words = sorted(words, key=lambda s: s.lower())
 
         # Prioritize the current view's words to the top.
         words = current_view_words + words
         words = without_duplicates(words)
-        words = sorted(words)
+        words = sorted(words, key=lambda s: s.lower())
 
         # Convert list to tuples.
         words = [(w, w.replace('$', '\\$')) for w in words]
